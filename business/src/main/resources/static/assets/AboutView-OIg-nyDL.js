@@ -1,0 +1,1 @@
+import{_ as e,c as o,o as t,a as s}from"./index-g5GNysKY.js";const a={mounted(){localStorage.clear()}},c={class:"about"},n=s("h1",null,"This is an about page",-1),r=[n];function _(i,d,l,p,u,f){return t(),o("div",c,r)}const m=e(a,[["render",_]]);export{m as default};
