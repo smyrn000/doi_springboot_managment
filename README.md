@@ -17,9 +17,6 @@ A web application designed to mimic the functionality of the Greek public admini
     -   [Frontend Setup (Vue.js)](#frontend-setup-vuejs)
 -   [Running the Application](#running-the-application)
 -   [Role Descriptions](#role-descriptions)
--   [Screenshots](#screenshots)
--   [Contributing](#contributing)
--   [License](#license)
 
 ## Features
 
@@ -47,11 +44,15 @@ Ensure you have the following installed before setting up the project:
 
 ## Getting Started
 
+### Clone the repository
+
+- clone repo
+
 ### Database Configuration
 
 1. Using MySQL create database ```db_doi```
 
-3. Create the following tables using these queries: 
+2. Create the following tables using these queries: 
 - **role**
 ```sql
 	CREATE TABLE `role` (
@@ -117,11 +118,21 @@ Ensure you have the following installed before setting up the project:
   	  COMMIT;
  ```
 
+3. Update  ```application.properties``` depending on the database configuration used.
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/db_doi
+
+spring.datasource.username=root
+
+spring.datasource.password=root
+
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+# If using Xampp
+# spring.jpa.hibernate.ddl-auto=update
+# If using Mariadb
+spring.jpa.database-platform=org.hibernate.dialect.MariaDBDialect
+```
 Ensure you have a MySQL server running and the `db_doi` database created before starting the application.
-
-### Clone the repository
-
-- clone repo
 
 ### Backend Setup (Spring Boot)
 
@@ -132,41 +143,31 @@ cd business
 ```
 2.  Run the following command to build and start the Spring Boot application:
 
-bash
-
-Copy code
-
-`./gradlew bootRun` 
+```bash
+./gradlew build
+``` 
+```bash
+./gradlew bootRun
+``` 
 
 3.  The backend will start on http://localhost:8080 by default.
 
 ### Frontend Setup (Vue.js)
 
 1.  Navigate to the frontend directory:
-
-bash
-
-Copy code
-
-`cd frontend` 
+```bash
+cd business-front
+```
 
 2.  Install dependencies:
-
-bash
-
-Copy code
-
-`npm install` 
-
-3.  Start the Vue.js frontend:
-
-bash
-
-Copy code
-
-`npm run serve` 
-
-4.  The frontend will be available at http://localhost:3000.
+```bash
+npm install
+```
+3.  Start the Vue.js frontend: 
+```bash
+npm run dev
+```
+4.  The frontend will be available at http://localhost:5173.
 
 ## Running the Application
 
@@ -174,7 +175,7 @@ To run both frontend and backend:
 
 1.  Start the backend server using Gradle as described earlier.
 2.  Start the frontend server using npm.
-3.  The application can be accessed via the frontend URL http://localhost:3000, and the backend APIs are available on http://localhost:8080.
+3.  The application can be accessed via the frontend URL http://localhost:5173
 
 ## Role Descriptions
 
@@ -192,21 +193,3 @@ To run both frontend and backend:
 
 -   Can view personal information.
 -   Can submit forms to the staff for approval.
-
-## Screenshots
-
-Here, you can add screenshots of the application in action, such as:
-
--   **Admin Dashboard**
--   **Staff Dashboard**
--   **User Form Submission**
-
-## Contributing
-
-Contributions are welcome! Please open an issue or submit a pull request.
-
-1.  Fork the repository.
-2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
-3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
-4.  Push to the branch (`git push origin feature/AmazingFeature`).
-5.  Open a pull request.
