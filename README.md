@@ -1,26 +1,60 @@
-# DOI Fullstack Project
-### Overview
-This project is a full-stack application for the Δημόσια Οικονομική Υπηρεσία. It features a Spring Boot backend with Gradle for building and managing dependencies, and a Vue.js frontend for interactive user interfaces. The application is designed to manage user registrations, process form submissions, and provide administrative functionalities.
+# ΔΟΥ Management System
+A web application designed to mimic the functionality of the Greek public administration system, ΔΟΥ (Greek Tax Authority), allowing for admin, staff, and user roles with distinct capabilities. Built using **Spring Boot** for the backend and **Vue.js** for the frontend, this app allows:
 
-### Features
-- User Registration and Authentication: Secure registration and login system for users.
-- Form Submission: Users can submit and track forms, which are then reviewed by administrators.
-- Admin Panel: Admins have the capability to review form submissions, manage user accounts, and perform administrative tasks.
+-   **Admins** to manage users (create, update, delete).
+-   **Staff** to view and process forms submitted by users (approve or decline).
+-   **Users** to manage personal information and submit forms for processing.
+
+ ## Table of Contents
+
+-   [Features](#features)
+-   [Technology Stack](#technology-stack)
+-   [Prerequisites](#prerequisites)
+-   [Getting Started](#getting-started)
+    -   [Database Configuration](#database-configuration)
+    -   [Clone the repository](#clone-the-repository)
+    -   [Backend Setup (Spring Boot)](#backend-setup-spring-boot)
+    -   [Frontend Setup (Vue.js)](#frontend-setup-vuejs)
+-   [Running the Application](#running-the-application)
+-   [Role Descriptions](#role-descriptions)
+-   [Screenshots](#screenshots)
+-   [Contributing](#contributing)
+-   [License](#license)
+
+## Features
+
+-   **Admin Dashboard**: Manage users, including creating, updating, and deleting users.
+-   **Staff Dashboard**: Review, approve, or decline user-submitted forms.
+-   **User Portal**: View personal information and submit forms for staff review.
+-   Authentication and role-based access control for different features.
+
+## Technology Stack
+
+-   **Backend**: Spring Boot, Spring Security, JPA, MySQL
+-   **Frontend**: Vue.js, Vue Router
+-   **Build Tool**: Gradle
+-   **Database**:  MySQL
+-   **Authentication**: JWT-based authentication
+
+## Prerequisites
+
+Ensure you have the following installed before setting up the project:
+
+-   **JDK 17 or later**
+-   **Node.js & npm** (for Vue.js frontend)
+-   **Gradle** (for backend build)
+-   **MySQL** ( You can use Mariadb for easy setup)
 
 ## Getting Started
-### Prerequisites
-- JDK 11 or later
-- Node.js and npm
-- MySQL Database
-- IntelliJ (Recommended)
 
-### Installation
-- Clone the Repository:
-- Create database
-- Create Tables
-  	- role
-  	  ```sql
-  	  CREATE TABLE `role` (
+### Database Configuration
+
+1. Using MySQL create database ```db_doi```
+
+3. Create the following tables using these queries: 
+- **role**
+```sql
+	CREATE TABLE `role` (
 	  `id` int(10) NOT NULL,
 	  `authority` varchar(255) DEFAULT NULL
 		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -31,10 +65,10 @@ This project is a full-stack application for the Δημόσια Οικονομι
   	  ALTER TABLE `role`
   		MODIFY `id` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
   	  COMMIT;
-  	  ```
- 	- user
-    	```sql
-  	  CREATE TABLE `user` (
+ ```
+ - **user**
+ ```sql 
+	 CREATE TABLE `user` (
 	  `id` int(10) NOT NULL,
 	  `username` varchar(20) NOT NULL,
 	  `password` varchar(255) NOT NULL,
@@ -57,10 +91,10 @@ This project is a full-stack application for the Δημόσια Οικονομι
      	ALTER TABLE `user`
   		ADD CONSTRAINT `FKn82ha3ccdebhokx3a8fgdqeyy` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
 		COMMIT;
-  	  ```
-  	- form
-  	  ```sql
-  	  CREATE TABLE `form` (
+ ```
+ - **form**
+ ```sql
+	 CREATE TABLE `form` (
 	  `id` int(10) NOT NULL,
 	  `purpose` varchar(50) NOT NULL,
 	  `katastatiko` varchar(100) NOT NULL,
@@ -81,56 +115,98 @@ This project is a full-stack application for the Δημόσια Οικονομι
 	  ALTER TABLE `form`
 	  ADD CONSTRAINT `FKsniuo4i0n35d0lw0pjlc2iqwe` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`);
   	  COMMIT;
-  	  ```
-  
+ ```
 
-### Backend Setup:
-- Navigate to the backend directory: 
-  -  ```cd BusinessProject\business```
-  
-- Update the application.properties to configure the database connection.
-  	- ex.
-  	  	```
-	  	spring.datasource.url=jdbc:mysql://localhost:3306/db_doi
-		spring.datasource.username=root
-		spring.datasource.password=root
-		spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-		spring.jpa.hibernate.ddl-auto=update
-	
-- Build the project using Gradle:
-  - ```./gradlew build```
-  
-- Run the Spring Boot application:
-  - ```./gradlew bootRun```
-  
-### Frontend Setup:
-- Navigate to the frontend directory:
-  - ```cd BusinessProject\business-front```
-  - ```npm run dev```
-  - The frontend will be served on http://localhost:5173/
-  
-## Usage
-- The backend application will be accessible on http://localhost:8080 (default port).
-- In case of npm run dev, the application will be accessible on http://localhost:5173 (better choice)
-- Users can:
-  - Log in, View their details and submit forms.
-- Administrators can:
-  - Log in, view, update or delete users, view, accept or decline forms and have access to the admin panel to manage the application.
-#### On Project start, 2 user roles are created and 1 admin user with username: ```admin``` and password: ```admin```
-```java
-@Bean
-	CommandLineRunner run(RoleRepository roleRepository, UserRepository userRepository, PasswordEncoder passwordEncoder)
-	{
-		return args -> {
-			if (roleRepository.findByAuthority("ADMIN").isPresent()) return;
+Ensure you have a MySQL server running and the `db_doi` database created before starting the application.
 
-			// Create admin and user Role
-			Role adminRole = roleRepository.save(new Role("ADMIN"));
-			roleRepository.save(new Role("USER"));
-			// Create Admin account
-			User admin = new User("admin", passwordEncoder.encode("admin"), adminRole);
-			userRepository.save(admin);
-		};
+### Clone the repository
 
-	}
+- clone repo
+
+### Backend Setup (Spring Boot)
+
+1.  Navigate to the backend directory:
+
+```bash
+cd business
 ```
+2.  Run the following command to build and start the Spring Boot application:
+
+bash
+
+Copy code
+
+`./gradlew bootRun` 
+
+3.  The backend will start on http://localhost:8080 by default.
+
+### Frontend Setup (Vue.js)
+
+1.  Navigate to the frontend directory:
+
+bash
+
+Copy code
+
+`cd frontend` 
+
+2.  Install dependencies:
+
+bash
+
+Copy code
+
+`npm install` 
+
+3.  Start the Vue.js frontend:
+
+bash
+
+Copy code
+
+`npm run serve` 
+
+4.  The frontend will be available at http://localhost:3000.
+
+## Running the Application
+
+To run both frontend and backend:
+
+1.  Start the backend server using Gradle as described earlier.
+2.  Start the frontend server using npm.
+3.  The application can be accessed via the frontend URL http://localhost:3000, and the backend APIs are available on http://localhost:8080.
+
+## Role Descriptions
+
+### Admin
+
+-   Can create, update, and delete users.
+-   Access the Admin Dashboard to manage system-wide settings.
+
+### Staff
+
+-   Can view submitted forms by users.
+-   Can approve or decline forms based on user information.
+
+### User
+
+-   Can view personal information.
+-   Can submit forms to the staff for approval.
+
+## Screenshots
+
+Here, you can add screenshots of the application in action, such as:
+
+-   **Admin Dashboard**
+-   **Staff Dashboard**
+-   **User Form Submission**
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request.
+
+1.  Fork the repository.
+2.  Create your feature branch (`git checkout -b feature/AmazingFeature`).
+3.  Commit your changes (`git commit -m 'Add some AmazingFeature'`).
+4.  Push to the branch (`git push origin feature/AmazingFeature`).
+5.  Open a pull request.
